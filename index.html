@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TikTok Mall 审核问题复盘报告（移动端版）</title>
+
+<style>
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){.gallery{grid-template-columns:1fr}}
+.img-box{background:#fff;border:1px solid #e8edf3;border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(15,25,40,.06)}
+.caption{margin-top:8px;color:#5f6b7a;font-size:14px}
+.iframe-wrap{position:relative;width:100%;padding-top:62%; /* 自适应高宽比 */
+  border-radius:8px;overflow:hidden;background:#000}
+.iframe-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* === 基础样式 === */
+:root { --base-font: 16px; --line: 1.7; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+       margin:0; background:#f7f8fa; color:#1f2328; font-size: var(--base-font); line-height: var(--line); }
+.wrap { max-width: 1100px; margin: 0 auto; background:#fff; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.06); overflow:hidden; }
+header { padding: 20px 24px; border-bottom:1px solid #eef0f2; background:linear-gradient(135deg,#f7fbff,#fff); }
+h1 { margin:0; font-size:22px; }
+.meta { color:#6a737d; font-size:13px; margin-top:6px; }
+
+section { padding:20px 24px; border-top:1px dashed #eef0f2; }
+h2 { font-size:18px; margin:0 0 12px; }
+p, li { line-height:1.65; font-size:16px; }
+.grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+.card { border:1px solid #eef0f2; border-radius:12px; padding:16px; background:#fafbfc; }
+.tag { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; margin-right:6px; }
+.tag-ok { background:#e6ffed; color:#0a5; border:1px solid #b7f5c8; }
+.tag-bad { background:#ffe9ea; color:#c0272d; border:1px solid #ffcdd1; }
+.table { width:100%; border-collapse:collapse; }
+.table th, .table td { border:1px solid #eef0f2; padding:10px 12px; text-align:left; }
+.table th { background:#f7f9fb; }
+.img-box { border:1px solid #eef0f2; border-radius:12px; overflow:hidden; background:#000; margin-bottom:14px; }
+.img-box img { width:100%; height:auto; display:block; border-radius:12px; }
+.caption { font-size:12px; color:#6a737d; padding:8px 10px; background:#fff; }
+.foot { color:#8b949e; font-size:12px; text-align:center; padding:22px; }
+
+/* === 移动端优化 === */
+@media (max-width:1024px) {
+  .grid { grid-template-columns:1fr; }
+  section { padding:16px; }
+  h1 { font-size:20px !important; }
+  h2 { font-size:16px !important; }
+  .card { font-size:15px; line-height:1.65; }
+  .table { display:block; overflow-x:auto; }
+  .table table { min-width:680px; }
+  li { margin:6px 0; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>TikTok Mall 审核问题复盘报告</h1>
+  <div class="meta">品牌：ELT ｜ 地区：越南站（VN） ｜ 日期：2025-10-23</div>
+</header>
+
+<section>
+  <h2>一、执行摘要（Executive Summary）</h2>
+  <div class="grid">
+    <div class="card">
+      <p><span class="tag tag-ok">已通过</span> 品牌授权（Brand Verification）：JD GLOBAL → THIEN BANG VIET NAM 一级授权已获批准。</p>
+      <p><span class="tag tag-bad">未通过</span> Mall 黑标（Mall Store）：系统仅提示“补充资料”，未说明具体原因。</p>
+    </div>
+    <div class="card">
+      <p><b>已提交资料：</b>官网 <a href="https://eltcosmetic.com" target="_blank">eltcosmetic.com</a>；KIPO 注册证；授权书；韩国两家门店图；工单沟通记录。</p>
+      <p><b>当前诉求：</b>请求 TikTok 审核团队明确缺失项，并提供 Mall 审核样例清单。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>二、关键时间线（Timeline）</h2>
+  <table class="table">
+    <tr><th>日期</th><th>事件</th><th>说明</th></tr>
+    <tr><td>10/16</td><td>品牌验证通过</td><td>官方确认 ELT 品牌授权已生效。</td></tr>
+    <tr><td>10/20~10/22</td><td>Mall 申请被拒</td><td>系统提示补充资料，无具体拒绝说明。</td></tr>
+    <tr><td>10/22</td><td>提交工单</td><td>工单编号 #202510220212203750，附全部证据。</td></tr>
+    <tr><td>10/23</td><td>再提交与说明</td><td>提供门店实拍及官网截图，等待复审。</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>三、问题分析（Root Cause Analysis）</h2>
+  <ul>
+    <li><b>① 官网验证信息不足：</b> 网站未在页脚展示 JD GLOBAL / ELT 品牌方信息及联系方式。</li>
+    <li><b>② 门店材料未标准化：</b> 照片缺少门头、货架、内部标识及 Google Maps 定位。</li>
+    <li><b>③ 缺少社交媒体 / 电商渠道影响力证明：</b> 
+        未提供拥有 ≥10,000 粉丝的 Facebook Fanpage，或 Shopee Mall 后台截图。
+        在越南 Mall 审核中，该项常用于证明品牌真实与影响力。</li>
+    <li><b>④ 第三方代办：</b> 发现非官方代理报价 6,000,000 VND 上标服务，中国代表3000人民币左右。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>四、与官方沟通摘要（Communications Log）</h2>
+  <ol>
+    <li>官方确认品牌认证通过，但 Mall 审核仍显示拒绝。</li>
+    <li>我方已提交完整资料：KIPO 证书、授权书、官网、门店照片、工单说明。</li>
+    <li>等待 Mall 审核组反馈具体缺失项及补充要求。</li>
+  </ol>
+</section>
+
+<section>
+  <h2>五、后续处理方案（Action Plan）</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>1）官网与线上资产补强</h3>
+      <ul>
+        <li>官网页脚添加：©ELT / JD GLOBAL CO., LTD，公司地址与授权邮箱。</li>
+        <li>上线 EN / VN 双语版本；新增 <b>Brand / Store</b> 页面展示门店与 Google Maps 链接。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>2）线下门店证据规范</h3>
+      <ul>
+        <li>每家门店补充 3~5 张标准照片（门头、内部、票据）。</li>
+        <li>附 Google Maps 定位与租赁合同（隐私打码）。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>3）补充品牌影响力证明</h3>
+      <ul>
+        <li>提供 ≥10,000 粉丝的 <b>Facebook Fanpage 截图</b> 或 <b>Shopee Mall 店铺后台截图</b>。</li>
+        <li>若暂无，可建立官方 Fanpage 并推广积累粉丝。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>4）工单升级与跟进</h3>
+      <ul>
+        <li>请求将工单转交 Mall 审核专案组。</li>
+        <li>每 48 小时跟进一次工单状态，直至获得明确反馈。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>六、图片与证据（Evidence Gallery）</h2>
+  <div class="gallery">
+
+    <div class="img-box">
+      <div class="iframe-wrap">
+        <iframe src="https://drive.google.com/file/d/17UvnexNq6sulytO8YCHYFxdcMYoT-Lgs/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="caption">越南代理报价聊天截图（第三方代办）</div>
+    </div>
+
+    <div class="img-box">
+      <div class="iframe-wrap">
+        <iframe src="https://drive.google.com/file/d/1zHzxfHAgheeAcprd9_bzVgJRTXfGOUHB/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="caption">TikTok 官方工单详情页</div>
+    </div>
+
+    <div class="img-box">
+      <div class="iframe-wrap">
+        <iframe src="https://drive.google.com/file/d/1YazRWOJ0fJv2xEVpbNpUQIhF0dDOQaPh/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="caption">与官方沟通截图 1（补件说明）</div>
+    </div>
+
+    <div class="img-box">
+      <div class="iframe-wrap">
+        <iframe src="https://drive.google.com/file/d/1gs_7wLBX46I-8aPPc7bbeDkOfYLiWhrw/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="caption">与官方沟通截图 2（提交门店证明）</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>七、负责人及时间计划（Owner & Milestones）</h2>
+  <ul>
+    <li><b>负责人：</b> 越南运营 / 韩国品牌方 / 技术（官网）三方协作。</li>
+    <li><b>T+2 天：</b> 官网补强，完善双语内容。</li>
+    <li><b>T+3 天：</b> 提交门店标准照片 + Fanpage 或 Shopee Mall 证明。</li>
+    <li><b>T+7 天：</b> 若仍无进展，升级至区域 Mall 审核主管。</li>
+  </ul>
+</section>
+
+<div class="foot">本报告用于内部复盘与管理汇报 汇报人：Mr zhou 。</div>
+</div>
+
+<script>
+// === 移动端交互优化 ===
+document.querySelectorAll('img').forEach(img => {
+  img.setAttribute('loading', 'lazy');
+  img.style.cursor = 'zoom-in';
+  img.addEventListener('click', () => {
+    window.open(img.src, '_blank');
+  });
+});
+</script>
+
+</body>
+</html>
